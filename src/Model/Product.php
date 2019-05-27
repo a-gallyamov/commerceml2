@@ -25,6 +25,11 @@ class Product extends Model
     public $unit;
 
     /**
+     * @var string $status
+     */
+    public $status;
+
+    /**
      * @var string $description
      */
     public $description;
@@ -92,6 +97,8 @@ class Product extends Model
         $this->sku  = trim($xml->Артикул);
         $this->unit = trim($xml->БазоваяЕдиница);
 
+        $this->status = ($xml->Статус) ? trim($xml->Статус) : '';
+
         if ($xml->Группы) {
             foreach ($xml->Группы->Ид as $categoryId) {
                 $this->categories[] = (string)$categoryId;
@@ -116,6 +123,8 @@ class Product extends Model
                 }
             }
         }
+
+        
     }
 
     /**

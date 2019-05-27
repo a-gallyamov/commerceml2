@@ -20,6 +20,11 @@ class Category extends Model
     public $parent;
 
     /**
+     * @var string $status
+     */
+    public $status;
+
+    /**
      * Create instance from file.
      *
      * @param null $importXml
@@ -43,6 +48,8 @@ class Category extends Model
         $this->id = (string) $xml->Ид;
 
         $this->name = (string) $xml->Наименование;
+
+        $this->status = ($xml->Статус) ? trim($xml->Статус) : '';
     }
 
     /**

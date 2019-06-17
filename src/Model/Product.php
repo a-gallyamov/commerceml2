@@ -59,6 +59,13 @@ class Product extends Model
      */
     public $properties = [];
 
+
+    /**
+     * @var array $storage
+     */
+    public $storage = [];
+
+
     /**
      * Class constructor.
      *
@@ -149,6 +156,13 @@ class Product extends Model
                     'currency' => (string)$price->Валюта,
                     'value'    => (float)$price->ЦенаЗаЕдиницу
                 ];
+            }
+        }
+
+        if ($xml->Склад) {
+            foreach ($xml->Склад as $storage) {
+                $id = (string)$storage['ИдСклада'];
+                $this->storage[$id] = (string)$storage['КоличествоНаСкладе'];
             }
         }
     }

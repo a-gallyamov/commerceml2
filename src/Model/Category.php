@@ -65,7 +65,7 @@ class Category extends Model
 
     /**
      * Add products to category.
-     * 
+     *
      * @param Collection $products
      * @return void
      */

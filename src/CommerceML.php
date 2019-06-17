@@ -8,6 +8,8 @@ use A_Gallyamov\CommerceML\Model\Product;
 use A_Gallyamov\CommerceML\Model\ProductCollection;
 use A_Gallyamov\CommerceML\Model\Property;
 use A_Gallyamov\CommerceML\Model\PropertyCollection;
+use A_Gallyamov\CommerceML\Model\StorageList;
+use A_Gallyamov\CommerceML\Model\StorageListCollection;
 use A_Gallyamov\CommerceML\ORM\Collection;
 
 
@@ -34,6 +36,7 @@ class CommerceML
             'category'  => new CategoryCollection(),
             'product'   => new ProductCollection(),
             'priceType' => new PriceTypeCollection(),
+            'storageList' => new StorageListCollection(),
             'property'  => new PropertyCollection()
         ];
     }
@@ -154,6 +157,28 @@ class CommerceML
         }
     }
 
+
+    /**
+     * Parse storage list.
+     *
+     * @param \SimpleXMLElement $offersXml
+     *
+     * @return $data
+     */
+    public function parseStorageList($offersXml)
+    {
+        if ($offersXml->ПакетПредложений->Склады) {
+            foreach ($offersXml->ПакетПредложений->Склады->Склад as $xmlStorageList) {
+                $priceType = new StorageList($xmlStorageList);
+                $this->getCollection('storageList')->add($xmlStorageList);
+                $data[] = $xmlStorageList;
+            }
+
+            return $data;
+        }
+    }
+
+
     /**
      * @param \SimpleXMLElement $importXml
      *
@@ -220,6 +245,19 @@ class CommerceML
         }
 
         return $products->fetch();
+    }
+
+    /**
+     * Get storage list.
+     *
+     * @param array $attach
+     *
+     * @return array|StorageList[]
+     */
+
+    public function getStorageList()
+    {
+        return $this->parseStorageList($this->file_offers);
     }
 
     /**
